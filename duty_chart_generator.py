@@ -59,18 +59,31 @@ if __name__ == "__main__":
         required=True,
         help='Enter the initials of the individuals e.g. A B C',
     )
-    parser.add_argument('--duty-columns', '-dc', nargs='+', required=True)
-    parser.add_argument('--persons-per-duty-nos',
-                        '-ppd',
-                        type=int,
+    parser.add_argument('--duty-columns',
+                        '-dc',
                         nargs='+',
-                        required=True)
-    parser.add_argument('--order_matters',
-                        '-om',
-                        choices=['yes', 'no'],
-                        nargs='+',
-                        required=True)
+                        required=True,
+                        help="Enter the duties e.g. Duty1 Duty2")
+    parser.add_argument(
+        '--persons-per-duty-nos',
+        '-ppd',
+        type=int,
+        nargs='+',
+        required=True,
+        help="Enter the persons per duty number i.e. how many of the people"
+        " from the initials list would work at a time on a single duty.")
+    parser.add_argument(
+        '--order_matters',
+        '-om',
+        choices=['yes', 'no'],
+        nargs='+',
+        required=True,
+        help="This is a list of 'yes', 'no' values where the former means"
+        " that the order matters in the grouping as in AB is different"
+        " from BA and the latter means that the order does not matter.")
     args = parser.parse_args()
+    assert (len(args.duty_columns) == len(args.persons_per_duty_nos) == len(
+        args.order_matters))
     duty_dataframe = create_duty_dataframe(args.initials, args.duty_columns,
                                            args.persons_per_duty_nos,
                                            args.order_matters)
